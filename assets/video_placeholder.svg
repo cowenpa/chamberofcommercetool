@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#f0f2f6"/>
+  <g transform="translate(400, 225)">
+    <circle cx="0" cy="0" r="80" fill="#ffffff" opacity="0.9"/>
+    <polygon points="30,0 -15,-25 -15,25" fill="#FF4B4B" transform="translate(-5, 0)"/>
+  </g>
+  <text x="400" y="350" font-family="Arial" font-size="24" font-weight="bold" fill="#262730" text-anchor="middle">
+    Behind the Scenes Video
+  </text>
+  <text x="400" y="380" font-family="Arial" font-size="16" fill="#262730" text-anchor="middle">
+    Click to play
+  </text>
+</svg>

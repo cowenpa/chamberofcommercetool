@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="80" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="#f0f2f6"/>
+  <g transform="translate(10, 20)">
+    <text x="0" y="20" font-family="Arial" font-size="24" font-weight="bold" fill="#262730">
+      AI Image Ideas
+    </text>
+    <text x="0" y="40" font-family="Arial" font-size="16" fill="#262730">
+      Chamber of Commerce
+    </text>
+  </g>
+  <path d="M160,20 L180,20 L180,40 L160,40 Z" fill="#FF4B4B"/>
+  <path d="M160,45 L180,45 L180,65 L160,65 Z" fill="#0068c9"/>
+</svg>
