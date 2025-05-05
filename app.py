@@ -36,6 +36,15 @@ if 'generated_images' not in st.session_state:
     st.session_state.generated_images = {}
 if 'generated_idea' not in st.session_state:
     st.session_state.generated_idea = None
+if 'force_refresh' not in st.session_state:
+    st.session_state.force_refresh = False
+
+# Check if we need to force a refresh due to image generation
+if st.session_state.force_refresh:
+    # Reset the flag
+    st.session_state.force_refresh = False
+    # Ensure rerun happens only once
+    st.rerun()
 
 # Initialize Airtable client
 airtable_client = AirtableClient(
@@ -421,6 +430,12 @@ if st.session_state.selected_company:
                         # Store the current idea number in session state for reloading
                         st.session_state.generated_idea = idea_number
                         
+                        # Add a small delay to ensure data is properly saved before refresh
+                        time.sleep(0.5)
+                        
+                        # Flag to force refresh after execution completes
+                        st.session_state.force_refresh = True
+                        
                         return True
                     elif status == "exists":
                         # Image already exists
@@ -447,10 +462,24 @@ if st.session_state.selected_company:
                         # Display message with idea_chosen if available, otherwise use idea_number
                         display_idea = idea_chosen if idea_chosen else idea_number
                         st.info(f"Image already exists for idea {display_idea}.")
+                        
+                        # Add a small delay to ensure data is properly saved before refresh
+                        time.sleep(0.5)
+                        
+                        # Flag to force refresh after execution completes
+                        st.session_state.force_refresh = True
+                        
                         return True
                     else:
                         # Status should be "no image and no selection exists"
                         st.info(f"Generating AI image for idea {idea_number}. Please wait a moment and check back later.")
+                        
+                        # Add a small delay to ensure data is properly saved before refresh
+                        time.sleep(0.5)
+                        
+                        # Flag to force refresh after execution completes
+                        st.session_state.force_refresh = True
+                        
                         return True
                 else:
                     st.error(f"Failed to generate image: {response.text}")
