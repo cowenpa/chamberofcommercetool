@@ -38,6 +38,8 @@ if 'generated_idea' not in st.session_state:
     st.session_state.generated_idea = None
 if 'force_refresh' not in st.session_state:
     st.session_state.force_refresh = False
+if 'anchor' not in st.session_state:
+    st.session_state.anchor = None
 
 # Check if we need to force a refresh due to image generation
 if st.session_state.force_refresh:
@@ -221,29 +223,58 @@ with st.sidebar:
     <style>
     .stButton button {
         width: 100%;
+        margin-bottom: 5px;
     }
     </style>
     """, unsafe_allow_html=True)
     
-    if st.button("Jump to Behind the Scenes Video"):
-        # Use JavaScript to scroll to the video section
-        st.markdown("""
-        <script>
-            document.querySelector('#video-section').scrollIntoView({
-                behavior: 'smooth'
-            });
-        </script>
-        """, unsafe_allow_html=True)
+    # Navigation using HTML links with styling
+    st.markdown("""
+    <style>
+    .nav-button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: center;
+        background-color: #4e8cff;
+        color: white !important;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     
-    if st.button("Jump to Ideas Flipbook"):
-        # Use JavaScript to scroll to the flipbook section
-        st.markdown("""
-        <script>
-            document.querySelector('#flipbook-section').scrollIntoView({
-                behavior: 'smooth'
+    # Add JavaScript for smooth scrolling and navigation buttons
+    st.markdown("""
+    <a href="#video1-section" class="nav-button">Jump to Behind the Scenes Video 1</a>
+    <a href="#video2-section" class="nav-button">Jump to Behind the Scenes Video 2</a>
+    <a href="#flipbook-section" class="nav-button">Jump to Ideas Flipbook</a>
+    
+    <script>
+    // Add smooth scrolling for all navigation links
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('.nav-button');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
             });
-        </script>
-        """, unsafe_allow_html=True)
+        });
+    });
+    </script>
+    """, unsafe_allow_html=True)
     
     # Analytics Dashboard with password protection
     st.divider()
@@ -762,16 +793,35 @@ if st.session_state.selected_company:
     else:
         st.error("No AI image ideas to download.")
     
-    # Add Behind the Scenes Video section with anchor
-    st.markdown("<div id='video-section'></div>", unsafe_allow_html=True)
-    st.subheader("Behind the Scenes Video")
-    st.write("Watch how we create AI image ideas for your business:")
-    st.video("https://youtu.be/H4Z15bi0jT4?si=YzVKbw9-ixzPX1fd")
+    # Get query parameters using non-deprecated method
+    query_params = st.query_params
+    section = query_params.get("section", "")
     
-    # Add Ideas Flipbook section with anchor
-    st.markdown("<div id='flipbook-section'></div>", unsafe_allow_html=True)
-    st.subheader("Ideas Flipbook")
-    st.write("Flip through our collection of AI image ideas:")
+    # Video 1 section with anchor
+    video1_section = st.container()
+    with video1_section:
+        # Create an HTML anchor for this section
+        st.markdown('<div id="video1-section"></div>', unsafe_allow_html=True)
+        st.subheader("Behind the Scenes Video 1")
+        st.write("Watch how we create AI image ideas for your business:")
+        st.video("https://youtu.be/H4Z15bi0jT4?si=YzVKbw9-ixzPX1fd")
+    
+    # Video 2 section with anchor
+    video2_section = st.container()
+    with video2_section:
+        # Create an HTML anchor for this section
+        st.markdown('<div id="video2-section"></div>', unsafe_allow_html=True)
+        st.subheader("Behind the Scenes Video 2")
+        st.write("Learn more about our AI image generation process:")
+        st.video("https://youtu.be/8DHCdoKpS6o")
+    
+    # Flipbook section with anchor
+    flipbook_section = st.container()
+    with flipbook_section:
+        # Create an HTML anchor for this section
+        st.markdown('<div id="flipbook-section"></div>', unsafe_allow_html=True)
+        st.subheader("Ideas Flipbook")
+        st.write("Flip through our collection of AI image ideas:")
     st.markdown(
         """
         <iframe allowfullscreen="true" src="https://designrr.page/?id=426641&token=1822161547&type=FP&h=4290" 
@@ -805,3 +855,5 @@ else:
             if 'Website' in company_data:
                 st.write(f"🌐 [Website]({company_data['Website']})")
             st.write("Select this company from the dropdown to view AI image ideas.")
+
+
